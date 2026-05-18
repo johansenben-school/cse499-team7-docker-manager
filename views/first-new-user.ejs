@@ -1,1 +1,20 @@
 <!-- form that takes username and password and a password confirmation that sends a post request to /first-new-login -->
+ <div class="form-container">
+    <h2>Setup Admin Account</h2>
+    <p>No users found. Please create the first administrator account.</p>
+    <form action="/first-new-user" method="POST">
+        <div class="form-group">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required>
+        </div>
+        <div class="form-group">
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+        </div>
+        <div class="form-group">
+            <label for="passwordConfirmation">Confirm Password:</label>
+            <input type="password" id="passwordConfirmation" name="passwordConfirmation" required>
+        </div>
+        <button type="submit" class="btn">Create Admin Account</button>
+    </form>
+</div>
