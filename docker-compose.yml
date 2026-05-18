@@ -5,6 +5,4 @@ services:
       dockerfile: dockerfile
     ports:
       - "3000:3000"
-    environment:
-      - DOCKER_MANAGER_PORT=3000
     
