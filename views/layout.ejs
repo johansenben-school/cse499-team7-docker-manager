@@ -4,10 +4,27 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title><%- title %></title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap">
+  <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
+  <button id="theme-switcher" class="theme-toggle-btn">Toggle Dark Mode</button>
+
   <main>
     <%- body %>
   </main>
+
+  <script>
+    const themeBtn = document.getElementById('theme-switcher');
+    
+    // Listen for user click interaction to swing document element root attributes
+    themeBtn.addEventListener('click', () => {
+        const currentTheme = document.documentElement.getAttribute('data-theme');
+        const targetTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        
+        document.documentElement.setAttribute('data-theme', targetTheme);
+        themeBtn.textContent = targetTheme === 'dark' ? 'Toggle Light Mode' : 'Toggle Dark Mode';
+    });
+  </script>
 </body>
 </html>

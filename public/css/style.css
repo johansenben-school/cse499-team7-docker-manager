@@ -1,0 +1,92 @@
+/* Color Variables - Light Mode Theme Defaults */
+:root {
+  --bg-color: #ffffff;
+  --text-color: #111827;
+  --card-bg: #f3f4f6;
+  --input-bg: #ffffff;
+  --input-border: #d1d5db;
+  --primary-blue: #2496ED; /* Docker Identity Blue */
+  --btn-hover: #1a74ba;
+}
+
+/* Dark Mode Overrides applied via data-theme selector */
+[data-theme='dark'] {
+  --bg-color: #111827;
+  --text-color: #f9fafb;
+  --card-bg: #1f2937;
+  --input-bg: #374151;
+  --input-border: #4b5563;
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  margin: 0;
+  transition: all 0.3s ease; /* Makes the switch look smooth */
+}
+
+/* Form Container Layout */
+.form-container {
+  background-color: var(--card-bg);
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  max-width: 420px;
+  width: 100%;
+  margin: auto;
+  transition: background-color 0.3s ease;
+}
+
+.form-group {
+  margin-bottom: 1.25rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 0.625rem;
+  background-color: var(--input-bg);
+  color: var(--text-color);
+  border: 1px solid var(--input-border);
+  border-radius: 6px;
+  box-sizing: border-box;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Theme Switcher Button Styling */
+.theme-toggle-btn {
+  align-self: flex-end;
+  margin: 1.5rem;
+  padding: 0.5rem 1rem;
+  background-color: var(--primary-blue);
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.btn {
+  width: 100%;
+  padding: 0.75rem;
+  background-color: var(--primary-blue);
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.btn:hover {
+  background-color: var(--btn-hover);
+}
