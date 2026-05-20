@@ -1,10 +1,14 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const expressLayouts = require("express-ejs-layouts");
+const db = require('./database/database');
+const { getUser } = require("./database/users");
 
 //********** init **********
 const app = express();
 const PORT = 3000;
+
+
 
 //********** middleware **********
 app.use(express.json());

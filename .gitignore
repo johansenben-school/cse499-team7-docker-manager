@@ -34,3 +34,5 @@ coverage/
 # Temporary files
 .npm
 .eslintcache
+
+database/database
