@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/johansenben-school/cse499-team7-docker-manager#readme",
   "dependencies": {
+    "bcryptjs": "^3.0.3",
     "body-parser": "^2.2.2",
     "dotenv": "^17.4.2",
     "ejs": "^5.0.2",

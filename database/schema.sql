@@ -5,4 +5,4 @@ CREATE TABLE IF NOT EXISTS users (
   isAdmin BOOLEAN DEFAULT false
 );
 
-INSERT INTO users (username, password, isAdmin) VALUES ('username1', 'password1', TRUE)
+-- INSERT INTO users (username, password, isAdmin) VALUES ('username1', 'password1', TRUE)
