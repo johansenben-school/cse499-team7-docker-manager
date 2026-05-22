@@ -1,5 +1,7 @@
 const db = require('./database');
+const bcrypt = require("bcryptjs")
 
+const hashPassword = (password) => bcrypt.hash(password, 10);
 const getUserCount = () => {
   return new Promise((resolve, reject) => {
     try {
@@ -42,6 +44,7 @@ const getUser = (username) => {
     }
   });
 }
+
 const getUserFromLogin = (username, password) => {
   return new Promise((resolve, reject) => {
     try {
@@ -49,24 +52,27 @@ const getUserFromLogin = (username, password) => {
         SELECT *
         FROM users
         WHERE username = ?
-        AND password = ?
         LIMIT 1
       `;
 
-      db.get(sql, [username, password], (err, row) => {
-        if (err) {console.log(err)
-            resolve(null);
+      db.get(sql, [username], async (err, row) => {
+        if (err) {
+          resolve(null);
         } else {
-            resolve(row || null);
+          if (row && await bcrypt.compare(password, row.password)) {
+            resolve(row);
+            return;
+          }
+          resolve(null);
         }
       });
-    } catch (err) {console.log(err)
+    } catch (err) {
       resolve(null);
     }
   });
 }
 const createUser = (username, password, isAdmin = false) => {
-  return new Promise((resolve, reject) => {
+  return new Promise(async (resolve, reject) => {
     try {
       const sql = `
         INSERT INTO users 
@@ -75,7 +81,7 @@ const createUser = (username, password, isAdmin = false) => {
         (?, ?, ?)
       `;
 
-      db.run(sql, [username, password, isAdmin], (err, row) => {
+      db.run(sql, [username, await hashPassword(password), isAdmin], (err, row) => {
         if (err) {
             resolve(false);
         } else {

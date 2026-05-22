@@ -7,6 +7,8 @@ const { getUser, getUserFromLogin, createUser } = require("./database/users");
 const session = require("express-session");
 const { requireLogin, requireNotLoggedIn, newFirstUserIfNoUsers, requireNoUsers } = require("./middleware/auth");
 const { login, loginPost, logout } = require("./controllers/loginController");
+const { firstNewUser, firstNewUserPost } = require("./controllers/firstNewUserController");
+const { dashboard } = require("./controllers/dashboardController");
 
 
 //********** init **********
@@ -32,29 +34,12 @@ app.set("view engine", "ejs");
 //********** routes **********
 app.get("/login", requireNotLoggedIn, newFirstUserIfNoUsers, login);
 app.post("/login", requireNotLoggedIn, loginPost);
-
 app.get("/logout", logout);
 
-app.get("/first-new-user", requireNotLoggedIn, requireNoUsers, (req, res) => {
-  res.render("first-new-user", {
-    title: "Create New Admin",
-    layout: "layout"
-  });
-});
+app.get("/first-new-user", requireNotLoggedIn, requireNoUsers, firstNewUser);
+app.post("/first-new-user", requireNotLoggedIn, requireNoUsers, firstNewUserPost);
 
-app.post("/first-new-user", requireNotLoggedIn, requireNoUsers, async (req, res) => {
-  const { username, password, passwordConfirmation } = req.body;
-  console.log(username,password,passwordConfirmation)
-  //res.send(`login post: username: ${username}, password: ${password}, password confirmation: ${passwordConfirmation}`); //todo
-  if (username && password === passwordConfirmation){console.log(123)
-    await createUser(username, password, true);
-  }
-  res.redirect("/login");
-});
-
-app.get("/dashboard", requireLogin, (req, res) => {
-  res.send("dashboard");
-})
+app.get("/dashboard", requireLogin, dashboard)
 
 //********** start **********
 app.listen(PORT, "0.0.0.0", () => {
