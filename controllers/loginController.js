@@ -1,3 +1,4 @@
+const { getUserFromLogin } = require("../database/users");
 const login = (req, res) => {
   res.render("login", {
     title: "Login",

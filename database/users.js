@@ -1,5 +1,25 @@
 const db = require('./database');
 
+const getUserCount = () => {
+  return new Promise((resolve, reject) => {
+    try {
+      const sql = `
+        SELECT COUNT(*)
+        FROM users
+      `;
+
+      db.get(sql, [], (err, row) => {
+        if (err) {
+            resolve(0);
+        } else {
+            resolve(row["COUNT(*)"] || 0);
+        }
+      });
+    } catch (err) {
+      resolve(0);
+    }
+  });
+}
 const getUser = (username) => {
   return new Promise((resolve, reject) => {
     try {
@@ -34,13 +54,13 @@ const getUserFromLogin = (username, password) => {
       `;
 
       db.get(sql, [username, password], (err, row) => {
-        if (err) {
+        if (err) {console.log(err)
             resolve(null);
         } else {
             resolve(row || null);
         }
       });
-    } catch (err) {
+    } catch (err) {console.log(err)
       resolve(null);
     }
   });
@@ -71,5 +91,6 @@ const createUser = (username, password, isAdmin = false) => {
 module.exports = {
   getUser,
   getUserFromLogin,
-  createUser
+  createUser,
+  getUserCount
 }
