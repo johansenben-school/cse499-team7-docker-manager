@@ -72,8 +72,8 @@ body {
 }
 
 .theme-toggle-btn {
-  align-self: flex-end;
-  margin: 1.5rem;
+  margin: 1.5rem; 
+  margin-left: auto;
   padding: 0.5rem 1rem;
   background-color: var(--primary-blue);
   color: #ffffff;
@@ -81,6 +81,8 @@ body {
   border-radius: 6px;
   cursor: pointer;
   font-weight: 600;
+  width: fit-content;
+  height: fit-content;
 }
 
 .btn {
