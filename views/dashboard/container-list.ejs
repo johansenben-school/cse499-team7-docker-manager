@@ -1,9 +1,20 @@
 <style>
+  main {
+    flex: 1
+  }
   .container-block {
     display: grid;
+    grid-template-columns: 100%;
+    background: var(--card-bg);
+    margin-block: 0.5rem;
+    padding: 0.5em;
+    border: 1px solid var(--primary-blue);
   }
   .container-summary {
     grid-row: 1;
+    font-size: large;
+    display: flex;
+    justify-content: space-between;
   }
   .container-details {
     grid-row: 2;
@@ -16,23 +27,74 @@
   }
   .container-expand-details::after {
     content: 'see more';
+    font-style: italic;
+    opacity: 0.8;
   }
   .container-expand-details:has(input:checked)::after {
     content: 'see less';
+    font-style: italic;
+    opacity: 0.8;
   }
   .container-expand-details:has(input:checked) + .container-details {
-    display: block;
+    display: grid;
   }
   .container-expand-details input {
     display: none;
+  }
+  .container-controls {
+    display: flex;
+    gap: 0.5em;
+    margin-left: auto;
+  }
+  .container-control {
+    width: 2em;
+    height: 2em;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .start-container {
+    background: green;
+  }
+  .start-container::after {
+    content: '';
+    display: block;
+    border-left: 1em white solid;
+    border-top: 0.5em transparent solid;
+    border-bottom: 0.5em transparent solid;
+  }
+  .stop-container {
+    background: orange;
+  }
+  .stop-container::after {
+    content: '';
+    display: block;
+    width: 1em;
+    height: 1em;
+    background: white;
+  }
+  .delete-container {
+    background: red;
+  }
+  .delete-container::after {
+    content: '✕';
+    font-size: 1.5em;
+    font-weight: bolder;
+    color: white
+  }
+  .disabled-control {
+    background: gray;
   }
 </style>
 <% containers.forEach(c => { %>
   <div class="container-block">
     <div class="container-summary">
-      <span><%= c.Names[0] %></span>
+      <span><%= c.Names[0].substring(1) %></span>
       <span class="container-controls">
-
+        <form action="/container/start/<%= c.Id %>" method="post"><button type="submit" class="container-control start-container <%= user.isAdmin ? '' : "disabled-control" %>"></button></form>
+        <form action="/container/stop/<%= c.Id %>" method="post"><button type="submit" class="container-control stop-container <%= user.isAdmin ? '' : "disabled-control" %>"></button></form>
+        <form action="/container/delete/<%= c.Id %>" method="post"><button type="submit" class="container-control delete-container <%= user.isAdmin ? '' : "disabled-control" %>"></button></form>
       </span>
     </div>
     <label class="container-expand-details">
@@ -42,6 +104,8 @@
       <span>ID: <%= c.Id %></span>
       <span>Image: <%= c.Image %></span>
       <span>Image ID: <%= c.ImageID %></span>
+      <!-- <br>
+      <span><%= JSON.stringify(c) %></span> -->
     </div>
   </div>
 <% }) %>
