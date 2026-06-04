@@ -9,6 +9,8 @@ const { requireLogin, requireNotLoggedIn, newFirstUserIfNoUsers, requireNoUsers 
 const { login, loginPost, logout } = require("./controllers/loginController");
 const { firstNewUser, firstNewUserPost } = require("./controllers/firstNewUserController");
 const { dashboard } = require("./controllers/dashboardController");
+const { containerList, container } = require("./controllers/containerController");
+const { userDetails } = require("./controllers/userController");
 
 //********** init **********
 const app = express();
@@ -39,6 +41,9 @@ app.get("/first-new-user", requireNotLoggedIn, requireNoUsers, firstNewUser);
 app.post("/first-new-user", requireNotLoggedIn, requireNoUsers, firstNewUserPost);
 
 app.get("/dashboard", requireLogin, dashboard);
+
+app.get("/containers", requireLogin, containerList);
+app.get("/container/:id", requireLogin, container);
 
 // === WEEK 5 SPRINT 3: Eric's Profile Routing Extensions ===
 

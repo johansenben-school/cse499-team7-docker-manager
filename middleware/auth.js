@@ -5,6 +5,10 @@ const requireLogin = (req, res, next) => {
     res.redirect("/login");
     return;
   }
+  res.locals.user = {
+    username: req.session.username,
+    isAdmin: req.session.isAdmin ?? false
+  };
   next();
 }
 
