@@ -3,7 +3,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const expressLayouts = require("express-ejs-layouts");
 const db = require('./database/database');
-const { getUser, getUserFromLogin, createUser } = require("./database/users");
+const { getUser, getUserFromLogin, createUser, updateUser } = require("./database/users");
 const session = require("express-session");
 const { requireLogin, requireNotLoggedIn, newFirstUserIfNoUsers, requireNoUsers } = require("./middleware/auth");
 const { login, loginPost, logout } = require("./controllers/loginController");
@@ -51,7 +51,12 @@ app.get("/container/:id", requireLogin, container);
 app.get("/user/details", requireLogin, (req, res) => {
     res.render("user-details", { 
         title: "Profile Details", 
-        user: req.session.user 
+        user: {
+          username: req.session.username,
+          email: req.session.email
+        },
+        layout: "dashboard/layout",
+        activePage: "user-details" 
     });
 });
 
@@ -66,9 +71,11 @@ app.post("/user/update", requireLogin, async (req, res) => {
         }
 
         // Update the active session data memory so the views immediately show the modifications
-        if (req.session.user) {
-            req.session.user.username = username;
-            req.session.user.email = email;
+        if (req.session.username) {
+            await updateUser(req.session.username, username, email, newPassword);
+
+            req.session.username = username;
+            req.session.email = email;
         }
 
         // Redirect back to the profile details page to show the fresh updates safely

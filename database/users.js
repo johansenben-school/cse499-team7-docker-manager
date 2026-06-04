@@ -81,7 +81,7 @@ const createUser = (username, password, isAdmin = false) => {
         (?, ?, ?)
       `;
 
-      db.run(sql, [username, await hashPassword(password), isAdmin], (err, row) => {
+      db.run(sql, [username, await hashPassword(password), isAdmin], (err) => {
         if (err) {
             resolve(false);
         } else {
@@ -94,9 +94,35 @@ const createUser = (username, password, isAdmin = false) => {
   });
 }
 
+const updateUser = (oldUsername, newUsername, email, password) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const currentUserData = await getUser(oldUsername);
+      const sql = `
+        UPDATE users
+        SET username = ?, email = ?, password = ?
+        WHERE username = ?
+      `;
+      db.run(sql, [newUsername ?? currentUserData.username, email ?? currentUserData.email, await hashPassword(password) ?? currentUserData.password, oldUsername], (err) => {
+        if (err) {
+          console.error(err);
+          resolve(false);
+        } else {
+          resolve(true);
+        }
+      });
+      resolve(true);
+    } catch (err) {
+      console.error(err);
+      resolve(false);
+    }
+  });
+}
+
 module.exports = {
   getUser,
   getUserFromLogin,
   createUser,
-  getUserCount
+  getUserCount,
+  updateUser
 }

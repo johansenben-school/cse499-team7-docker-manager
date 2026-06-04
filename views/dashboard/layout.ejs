@@ -16,6 +16,11 @@
       padding: 0.5rem;
     }
   </style>
+  <script>
+    /* 1. RUN IMMEDIATELY: Check storage before body elements render to prevent a light flash */
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    document.documentElement.setAttribute('data-theme', savedTheme);
+  </script>
 </head>
 <body>
   <%- include('../partials/sidebar') %>
@@ -26,13 +31,21 @@
   <script>
     const themeBtn = document.getElementById('theme-switcher');
     
-    // Listen for user click interaction to swing document element root attributes
+    /* 2. INITIALIZE BUTTON TEXT: Make sure button text matches the saved state on reload */
+    const initialTheme = document.documentElement.getAttribute('data-theme');
+    themeBtn.textContent = initialTheme === 'dark' ? 'Toggle Light Mode' : 'Toggle Dark Mode';
+    
+    /* 3. INTERACTION EVENT: Handle clicks and update persistent storage memory */
     themeBtn.addEventListener('click', () => {
         const currentTheme = document.documentElement.getAttribute('data-theme');
         const targetTheme = currentTheme === 'dark' ? 'light' : 'dark';
         
+        // Update document look
         document.documentElement.setAttribute('data-theme', targetTheme);
         themeBtn.textContent = targetTheme === 'dark' ? 'Toggle Light Mode' : 'Toggle Dark Mode';
+        
+        // Save the setting into the browser's persistent memory
+        localStorage.setItem('theme', targetTheme);
     });
   </script>
 </body>
