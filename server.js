@@ -72,8 +72,9 @@ app.post("/user/update", requireLogin, async (req, res) => {
 
         // Update the active session data memory so the views immediately show the modifications
         if (req.session.username) {
-            await updateUser(req.session.username, username, email, newPassword);
-
+            let success = await updateUser(req.session.username, username, email, newPassword);
+            if (!success) 
+              throw new Error("updateUser failure");
             req.session.username = username;
             req.session.email = email;
         }

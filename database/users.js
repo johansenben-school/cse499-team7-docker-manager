@@ -103,7 +103,7 @@ const updateUser = (oldUsername, newUsername, email, password) => {
         SET username = ?, email = ?, password = ?
         WHERE username = ?
       `;
-      db.run(sql, [newUsername ?? currentUserData.username, email ?? currentUserData.email, await hashPassword(password) ?? currentUserData.password, oldUsername], (err) => {
+      db.run(sql, [newUsername ?? currentUserData.username, email ?? currentUserData.email, password ? await hashPassword(password) : currentUserData.password, oldUsername], (err) => {
         if (err) {
           console.error(err);
           resolve(false);
