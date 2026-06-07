@@ -5,11 +5,11 @@ const expressLayouts = require("express-ejs-layouts");
 const db = require('./database/database');
 const { getUser, getUserFromLogin, createUser, updateUser } = require("./database/users");
 const session = require("express-session");
-const { requireLogin, requireNotLoggedIn, newFirstUserIfNoUsers, requireNoUsers } = require("./middleware/auth");
+const { requireLogin, requireNotLoggedIn, newFirstUserIfNoUsers, requireNoUsers, requireAdmin } = require("./middleware/auth");
 const { login, loginPost, logout } = require("./controllers/loginController");
 const { firstNewUser, firstNewUserPost } = require("./controllers/firstNewUserController");
 const { dashboard } = require("./controllers/dashboardController");
-const { containerList, container } = require("./controllers/containerController");
+const { containerList, container, startContainerPost, stopContainerPost, deleteContainerPost } = require("./controllers/containerController");
 const { userDetails } = require("./controllers/userController");
 
 //********** init **********
@@ -44,6 +44,10 @@ app.get("/dashboard", requireLogin, dashboard);
 
 app.get("/containers", requireLogin, containerList);
 app.get("/container/:id", requireLogin, container);
+
+app.post("/container/start/:id", requireLogin, requireAdmin((req,res) => res.status(401).send("admin required")), startContainerPost);
+app.post("/container/stop/:id", requireLogin, requireAdmin((req,res) => res.status(401).send("admin required")), stopContainerPost);
+app.post("/container/delete/:id", requireLogin, requireAdmin((req,res) => res.status(401).send("admin required")), deleteContainerPost);
 
 // === WEEK 5 SPRINT 3: Eric's Profile Routing Extensions ===
 

@@ -86,15 +86,35 @@
   .disabled-control {
     background: gray;
   }
+  a {
+    font-style: none;
+    text-decoration: none;
+    color: inherit;
+  }
 </style>
+<script>
+  const containerControl = async (type, id, setStatus) => {
+    await fetch("/container/" + type + "/" + id, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            id
+        })
+    });
+    window.location.reload();
+  } 
+</script>
+<h2>Containers</h2>
 <% containers.forEach(c => { %>
   <div class="container-block">
     <div class="container-summary">
-      <span><%= c.Names[0].substring(1) %></span>
+      <a href="/container/<%= c.Id %>"><%= c.Names[0].substring(1) %></a>
       <span class="container-controls">
-        <form action="/container/start/<%= c.Id %>" method="post"><button type="submit" class="container-control start-container <%= user.isAdmin ? '' : "disabled-control" %>"></button></form>
-        <form action="/container/stop/<%= c.Id %>" method="post"><button type="submit" class="container-control stop-container <%= user.isAdmin ? '' : "disabled-control" %>"></button></form>
-        <form action="/container/delete/<%= c.Id %>" method="post"><button type="submit" class="container-control delete-container <%= user.isAdmin ? '' : "disabled-control" %>"></button></form>
+        <div onclick="containerControl('start', '<%= c.Id %>')" class="container-control start-container <%= !user.isAdmin || c.State === "running" ? "disabled-control" : '' %>"></div>
+        <div onclick="containerControl('stop', '<%= c.Id %>')" class="container-control stop-container <%= !user.isAdmin || c.State !== "running" ? "disabled-control": '' %>"></div>
+        <div onclick="containerControl('delete', '<%= c.Id %>')" class="container-control delete-container <%= user.isAdmin ? '' : "disabled-control" %>"></div>
       </span>
     </div>
     <label class="container-expand-details">

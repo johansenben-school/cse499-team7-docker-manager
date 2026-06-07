@@ -11,6 +11,15 @@ const requireLogin = (req, res, next) => {
   };
   next();
 }
+const requireAdmin = (onNotAdmin = (req, res) => res.redirect("/dashboard")) => {
+  return (req, res, next) => {
+    if (!req.session.isAdmin) {
+      onNotAdmin(req, res);
+      return;
+    }
+    next();
+  }
+}
 
 const requireNotLoggedIn = (req, res, next) => {
   if (!req.session.username) {
@@ -39,6 +48,7 @@ const requireNoUsers = async (req, res, next) => {
 
 module.exports = {
   requireLogin,
+  requireAdmin,
   requireNotLoggedIn,
   newFirstUserIfNoUsers,
   requireNoUsers
