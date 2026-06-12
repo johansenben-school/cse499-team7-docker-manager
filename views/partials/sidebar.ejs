@@ -13,6 +13,11 @@
             <li>
                 <a href="/user/details" <%= activePage === "user-details" ? 'class=active' : '' %>><i class="fas fa-user"></i> Profile Details</a>
             </li>
+            <% if (user.isAdmin) { %>
+                <li>
+                    <a href="/create-user" <%= activePage === "create-user" ? 'class=active' : '' %>><i class="fas fa-user"></i> Create User</a>
+                </li>
+            <% } %>
         </ul>
     </nav>
     <div class="sidebar-footer">

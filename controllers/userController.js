@@ -18,7 +18,8 @@ const createUserView = (req, res) => {
     title: "Create User",
     layout: "dashboard/layout",
     activePage: "create-user",
-    error: error // Makes the 'error' variable available in create-user.ejs
+    error: error, // Makes the 'error' variable available in create-user.ejs
+    activePage: "create-user"
   });
 }
 
@@ -32,7 +33,7 @@ const createUserPost = async (req, res) => {
             req.session.errorMessage = "Username and password are required fields.";
             return res.redirect("/create-user");
         }
-        
+        console.log(isAdmin)
         // Call the database utility function
         await createUser(username, password, isAdmin === 'true');
         

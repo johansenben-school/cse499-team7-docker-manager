@@ -14,8 +14,7 @@ const requireLogin = (req, res, next) => {
 const requireAdmin = (onNotAdmin = (req, res) => res.redirect("/dashboard")) => {
   return (req, res, next) => {
     if (!req.session.isAdmin) {
-      onNotAdmin(req, res);
-      return;
+      return onNotAdmin(req, res);
     }
     next();
   }

@@ -11,7 +11,6 @@ const { firstNewUser, firstNewUserPost } = require("./controllers/firstNewUserCo
 const { dashboard } = require("./controllers/dashboardController");
 
 const { containerList, container, startContainerPost, stopContainerPost, deleteContainerPost } = require("./controllers/containerController");
-const { userDetails } = require("./controllers/userController");
 
 // UPDATED IMPORT: Added createUserView and createUserPost
 const { userDetails, createUserView, createUserPost } = require("./controllers/userController");
@@ -80,8 +79,8 @@ app.post("/user/update", requireLogin, async (req, res) => {
 });
 
 // === WEEK 6 SPRINT 4: Eric's Create User Routing ===
-app.get("/create-user", requireLogin, createUserView);
-app.post("/create-user", requireLogin, createUserPost);
+app.get("/create-user", requireLogin, requireAdmin(), createUserView);
+app.post("/create-user", requireLogin, requireAdmin(), createUserPost);
 
 //********** start **********
 app.listen(PORT, "0.0.0.0", () => {
