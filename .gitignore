@@ -35,4 +35,5 @@ coverage/
 .npm
 .eslintcache
 
-database/database
+# Local SQLite Database File (Fixed for Sprint 4)
+database/app.db

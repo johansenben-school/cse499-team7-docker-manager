@@ -2,7 +2,8 @@ const sqlite3 = require('sqlite3').verbose();
 const fs = require('fs');
 const path = require('path');
 
-const dbPath = path.join(__dirname, 'database/app.db');
+// FIXED: Removed the extra 'database/' directory since __dirname is already inside it
+const dbPath = path.join(__dirname, 'app.db');
 const sqlPath = path.join(__dirname, 'schema.sql');
 
 const dbExists = fs.existsSync(dbPath);
