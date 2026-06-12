@@ -24,6 +24,11 @@
     grid-row: 3;
     width: 100%;
     height: 1rem;
+    cursor: pointer;
+  }
+  .container-expand-details:hover {
+    scale: 1.05;
+    transform-origin: left;
   }
   .container-expand-details::after {
     content: 'see more';
@@ -53,6 +58,10 @@
     display: flex;
     align-items: center;
     justify-content: center;
+  }
+  .container-control:not(.disabled-control):hover {
+    scale: 1.1;
+    cursor: pointer;
   }
   .start-container {
     background: green;
@@ -91,6 +100,15 @@
     text-decoration: none;
     color: inherit;
   }
+  .detail-label {
+    font-weight: bold;
+    font-size: large;
+    margin-right: 0.5rem;
+  }
+  .container-name:hover {
+    scale: 1.05;
+    transform-origin: left;
+  }
 </style>
 <script>
   const containerControl = async (type, id, setStatus) => {
@@ -110,7 +128,7 @@
 <% containers.forEach(c => { %>
   <div class="container-block">
     <div class="container-summary">
-      <a href="/container/<%= c.Id %>"><%= c.Names[0].substring(1) %></a>
+      <a href="/container/<%= c.Id %>" class="container-name"><%= c.Names[0].substring(1) %></a>
       <span class="container-controls">
         <div onclick="containerControl('start', '<%= c.Id %>')" class="container-control start-container <%= !user.isAdmin || c.State === "running" ? "disabled-control" : '' %>"></div>
         <div onclick="containerControl('stop', '<%= c.Id %>')" class="container-control stop-container <%= !user.isAdmin || c.State !== "running" ? "disabled-control": '' %>"></div>
@@ -121,9 +139,9 @@
       <input type="checkbox" name="expand-details">
     </label>
     <div class="container-details">
-      <span>ID: <%= c.Id %></span>
-      <span>Image: <%= c.Image %></span>
-      <span>Image ID: <%= c.ImageID %></span>
+      <span><span class="detail-label">ID:</span><%= c.Id %></span>
+      <span><span class="detail-label">Image:</span><%= c.Image %></span>
+      <span><span class="detail-label">Image ID:</span><%= c.ImageID %></span>
       <!-- <br>
       <span><%= JSON.stringify(c) %></span> -->
     </div>

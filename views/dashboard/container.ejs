@@ -21,6 +21,10 @@
     align-items: center;
     justify-content: center;
   }
+  .container-control:not(.disabled-control):hover {
+    scale: 1.1;
+    cursor: pointer;
+  }
   .start-container {
     background: green;
   }
@@ -53,6 +57,11 @@
   .disabled-control {
     background: gray;
   }
+  .detail-label {
+    font-weight: bold;
+    font-size: large;
+    margin-right: 0.5rem
+  }
 </style>
 <script>
   const containerControl = async (type, id, setStatus) => {
@@ -75,9 +84,7 @@
   <div onclick="containerControl('stop', '<%= id %>')" class="container-control stop-container <%= !user.isAdmin || containerData.State !== "running" ? "disabled-control": '' %>"></div>
   <div onclick="containerControl('delete', '<%= id %>')" class="container-control delete-container <%= user.isAdmin ? '' : "disabled-control" %>"></div>
 </span>
-<p><span>State: </span><%= containerData.State %></p>
-<p><span>Image: </span><%= containerData.Image %></p>
-<p><span>Image ID: </span><%= containerData.ImageID %></p>
-<p><span>Ports: </span><%= Object.entries(container.NetworkSettings.Ports).map(([key,val]) => `${key}:${val[0].HostPort}`).join(',') %></p>
-<!-- <%= JSON.stringify(containerData) %> -->
-<!-- <%= JSON.stringify(container) %> -->
+<p><span class="detail-label">State: </span><%= containerData.State %></p>
+<p><span class="detail-label">Image: </span><%= containerData.Image %></p>
+<p><span class="detail-label">Image ID: </span><%= containerData.ImageID %></p>
+<p><span class="detail-label">Ports: </span><%= Object.entries(container.NetworkSettings.Ports).map(([key,val]) => `${key}:${val[0].HostPort}`).join(',') %></p>
