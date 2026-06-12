@@ -1,0 +1,90 @@
+<style>
+  h2 {
+    margin-bottom: 0;
+  }
+  .container-id {
+    font-style: italic;
+    font-size: small;
+    opacity: 0.75;
+    margin-top: 0;
+  }
+  .container-controls {
+    display: flex;
+    gap: 0.5em;
+    margin-left: auto;
+  }
+  .container-control {
+    width: 2em;
+    height: 2em;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .container-control:not(.disabled-control):hover {
+    scale: 1.1;
+    cursor: pointer;
+  }
+  .start-container {
+    background: green;
+  }
+  .start-container::after {
+    content: '';
+    display: block;
+    border-left: 1em white solid;
+    border-top: 0.5em transparent solid;
+    border-bottom: 0.5em transparent solid;
+  }
+  .stop-container {
+    background: orange;
+  }
+  .stop-container::after {
+    content: '';
+    display: block;
+    width: 1em;
+    height: 1em;
+    background: white;
+  }
+  .delete-container {
+    background: red;
+  }
+  .delete-container::after {
+    content: '✕';
+    font-size: 1.5em;
+    font-weight: bolder;
+    color: white
+  }
+  .disabled-control {
+    background: gray;
+  }
+  .detail-label {
+    font-weight: bold;
+    font-size: large;
+    margin-right: 0.5rem
+  }
+</style>
+<script>
+  const containerControl = async (type, id, setStatus) => {
+    await fetch("/container/" + type + "/" + id, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            id
+        })
+    });
+    window.location.reload();
+  } 
+</script>
+<h2>Container - <%= containerData.Names[0].substring(1) %></h2>
+<p class="container-id"><%= id %></p>
+<span class="container-controls">
+  <div onclick="containerControl('start', '<%= id %>')" class="container-control start-container <%= !user.isAdmin || containerData.State === "running" ? "disabled-control" : '' %>"></div>
+  <div onclick="containerControl('stop', '<%= id %>')" class="container-control stop-container <%= !user.isAdmin || containerData.State !== "running" ? "disabled-control": '' %>"></div>
+  <div onclick="containerControl('delete', '<%= id %>')" class="container-control delete-container <%= user.isAdmin ? '' : "disabled-control" %>"></div>
+</span>
+<p><span class="detail-label">State: </span><%= containerData.State %></p>
+<p><span class="detail-label">Image: </span><%= containerData.Image %></p>
+<p><span class="detail-label">Image ID: </span><%= containerData.ImageID %></p>
+<p><span class="detail-label">Ports: </span><%= Object.entries(container.NetworkSettings.Ports).map(([key,val]) => `${key}:${val[0].HostPort}`).join(',') %></p>
